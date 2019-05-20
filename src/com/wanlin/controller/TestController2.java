@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/test")
 public class TestController2 {
 
-	// http://localhost/springmvc/test/hellopage?name=xxx123
+	// http://localhost/springmvc/test/hellopage?name=xxx1235
     @RequestMapping("/hellopage")
     public String getHello(String name ,Map<String ,Object> map){
         String res = "reeee";
