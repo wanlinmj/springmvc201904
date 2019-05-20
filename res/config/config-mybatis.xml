@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "mybatis-3-config.dtd">
+<configuration>
+   <typeAliases>
+   		<typeAlias alias="HashMap" 				type="java.util.HashMap" />
+   		<typeAlias alias="Map" 					type="java.util.Map" />
+		<typeAlias alias="String" 				type="java.lang.String" />
+		<typeAlias alias="Integer" 				type="java.lang.Integer" />
+   </typeAliases>
+   <mappers>
+      <!-- 配置映射文件  已启用自动扫描，此处不需要配置映射文件路径-->		
+   </mappers>
+</configuration>

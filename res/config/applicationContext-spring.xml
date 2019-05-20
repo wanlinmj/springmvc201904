@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:tx="http://www.springframework.org/schema/tx"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xmlns:mvc="http://www.springframework.org/schema/mvc"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+      http://www.springframework.org/schema/context 
+      http://www.springframework.org/schema/context/spring-context-3.2.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+      http://www.springframework.org/schema/aop 
+      http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- 加载*.properties资源文件 -->
+	<context:property-placeholder location="classpath:config/applicationContext*.properties"/>
+
+	<!--使Spring支持自动检测组件，如注解的Controller-->
+    <context:component-scan base-package="com.wanlin.*"/>
+    
+    <!-- 配置视图解析器   -->
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+      	<property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+     
+    <!-- 使用注解驱动 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<!--json转换器 -->
+            <ref bean="fastJsonHttpMessageConverter" />
+            <ref bean="stringHttpMessageConverter" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射  MyExceptionHandler 用到的（AnnotationMethodHandlerAdapter）消息转换器 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	    <property name="messageConverters">
+	        <list>
+	            <!--json转换器-->
+	            <ref bean="fastJsonHttpMessageConverter" />
+	            <ref bean="stringHttpMessageConverter" />
+	        </list>
+	    </property>
+	</bean>
+	
+	<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter"/> 
+	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+	<bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+         <property name="supportedMediaTypes">
+             <list>
+                 <!-- 这里顺序不能反，一定先写text/html,不然ie下出现下载提示 -->
+                 <value>text/html;charset=UTF-8</value>
+                 <value>application/json;charset=UTF-8</value>
+             </list>
+         </property>
+    </bean>
+             
+	 <!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->  
+    <bean id="multipartResolver"    
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">    
+        <!-- 默认编码 -->  
+        <property name="defaultEncoding" value="utf-8" />    
+        <!-- 文件大小最大值 -->  
+        <property name="maxUploadSize" value="10485760000" />    
+        <!-- 内存中的最大值 -->  
+        <property name="maxInMemorySize" value="40960" />    
+    </bean>
+    
+     <!-- 访问静态资源文件 -->
+    <!-- <mvc:default-servlet-handler/> 需要在web.xml中配置-->
+    <mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/css/**" location="/css/" />  
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/imgdata/**" location="/imgdata/" />  
+  	
+  	<!-- 配置数据源   jdbc数据库连接池 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="${jdbc.driver}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.username}"/>
+	    <property name="password" value="${jdbc.password}"/>
+	</bean>
+  	
+  	<!-- 启动 annotation注解事物 -->
+  	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+  	
+  	<!-- 启动AspectJ支持   只对扫描过的bean有效-->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 设置全局异常处理    注解扫描 不需要手动配置
+	<bean id="defaultExceptionHandler" class="com.wanlin.util.DefaultExceptionHandler"></bean> -->
+</beans>

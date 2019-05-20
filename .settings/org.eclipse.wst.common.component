@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="springmvc201904">
+        <wb-resource deploy-path="/" source-path="/WebRoot"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/res"/>
+        <property name="java-output-path" value="/springmvc201904/WebRoot/WEB-INF/classes"/>
+        <property name="context-root" value="/springmvc"/>
+    </wb-module>
+</project-modules>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanlin.dao.CityDao">
+	<resultMap id="BaseResultMap" type="com.wanlin.domain.City">
+		<result column="id" property="id" />
+		<result column="province_id" property="provinceId" />
+		<result column="city_name" property="cityName" />
+		<result column="description" property="description" />
+	</resultMap>
+
+	<parameterMap id="City" type="com.wanlin.domain.City"/>
+
+	<sql id="Base_Column_List">
+		id, province_id, city_name, description
+	</sql>
+
+	<select id="findByName" resultMap="BaseResultMap" parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from city
+		where city_name = #{cityName}
+	</select>
+
+	<insert id="saveCity" parameterType="Map">
+		INSERT INTO city ( province_id, city_name, description)
+		VALUES ( #{provinceId}, #{cityName} , #{description} )
+	</insert>
+
+	<delete id="deleteCity" parameterType="Map">
+		DELETE FROM city WHERE id = #{cityId}
+	</delete>
+
+	<update id="updateCity" parameterType="Map">
+		UPDATE city SET city_name = #{cityName} , description = #{description}
+		WHERE id = #{cityId}
+	</update>
+
+	<select id="findCityById" resultMap="BaseResultMap" parameterType="Map">
+		SELECT
+		<include refid="Base_Column_List" />
+		from city
+		where id = #{cityId}
+	</select>
+
+	<select id="findCityByName" resultMap="BaseResultMap" parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from city
+		where city_name = #{cityName}
+	</select>
+	
+	<select id="findCityMapByParam" resultType="Map" parameterType="Map">
+		select * from city where city_name = #{cityName}
+	</select>
+	
+	<select id="findCityListMapByParam" resultType="HashMap" parameterType="Map">
+		select * from city where city_name = #{cityName}
+	</select>
+</mapper>
