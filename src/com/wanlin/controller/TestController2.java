@@ -24,7 +24,7 @@ public class TestController2 {
         return "/hellopage";
     }
 
-    // http://localhost/springmvc/test/showmeg?name=xxx123
+    // http://localhost/springmvc/test/showmeg?name=xxx123wanlin
     @ResponseBody
     @RequestMapping("/showmeg")
     public Map<String ,Object> showmeg(String name ,Map<String ,Object> map){
