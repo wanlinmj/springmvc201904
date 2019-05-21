@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author kangwl_pc
  *
  */
-/* @Component */
+/*@Component*/
 public class DefaultExceptionHandler  implements HandlerExceptionResolver {
 
 	private static Log logger = LogFactory.getLog(DefaultExceptionHandler.class);

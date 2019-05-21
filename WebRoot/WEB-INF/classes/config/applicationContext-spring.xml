@@ -71,27 +71,39 @@
         <property name="maxInMemorySize" value="40960" />    
     </bean>
     
-     <!-- 访问静态资源文件 -->
-    <!-- <mvc:default-servlet-handler/> 需要在web.xml中配置-->
-    <mvc:resources mapping="/images/**" location="/images/" />
-	<mvc:resources mapping="/css/**" location="/css/" />  
-	<mvc:resources mapping="/js/**" location="/js/" />
-	<mvc:resources mapping="/imgdata/**" location="/imgdata/" />  
-  	
   	<!-- 配置数据源   jdbc数据库连接池 -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource1" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	    <property name="driverClassName" value="${jdbc.driver}"/>
 	    <property name="url" value="${jdbc.url}"/>
 	    <property name="username" value="${jdbc.username}"/>
 	    <property name="password" value="${jdbc.password}"/>
 	</bean>
-  	
-  	<!-- 启动 annotation注解事物 -->
-  	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+	<!-- 配置数据源   jdbc数据库连接池 -->
+	<bean id="dataSource2" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc2.driver}"/>
+		<property name="url" value="${jdbc2.url}"/>
+		<property name="username" value="${jdbc2.username}"/>
+		<property name="password" value="${jdbc2.password}"/>
+	</bean>
+
+	<!-- 数据源路由 -->
+	<bean id="dataSource" class="com.wanlin.util.DynamicDataSource">
+		<property name="defaultTargetDataSource" ref="dataSource1"/>
+		<property name="targetDataSources">
+			<map>
+				<entry value-ref="dataSource1" key="dataSource1"/>
+				<entry value-ref="dataSource2" key="dataSource2"/>
+			</map>
+		</property>
+	</bean>
+
+	<!-- 启动 annotation注解事物 -->
+  	<tx:annotation-driven proxy-target-class="true"/>
   	
   	<!-- 启动AspectJ支持   只对扫描过的bean有效-->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 
 	<!-- 设置全局异常处理    注解扫描 不需要手动配置
-	<bean id="defaultExceptionHandler" class="com.wanlin.util.DefaultExceptionHandler"></bean> -->
+	<bean id="defaultExceptionHandler" class="com.Wanlin.util.DefaultExceptionHandler"></bean> -->
 </beans>

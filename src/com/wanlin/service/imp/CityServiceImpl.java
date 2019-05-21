@@ -1,16 +1,16 @@
 package com.wanlin.service.imp;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.wanlin.annotations.Wanlin;
 import com.wanlin.dao.CityDao;
 import com.wanlin.domain.City;
 import com.wanlin.service.CityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 城市业务逻辑实现类
@@ -84,7 +84,9 @@ public class CityServiceImpl implements CityService {
     /**
      * 根据参数获取城市数据
      */
+
 	@Override
+    @Wanlin(isMark = true)
 	public Map<String, Object> findCityMapByParam(Map<String, Object> param) {
 		// TODO Auto-generated method stub
 		return cityDao.findCityMapByParam(param);
@@ -93,6 +95,7 @@ public class CityServiceImpl implements CityService {
 	/**
      * 根据参数获取城市数据
      */
+    @Wanlin
 	@Override
 	public List<Map<String, Object>> findCityListMapByParam(Map<String, Object> param) {
 		// TODO Auto-generated method stub

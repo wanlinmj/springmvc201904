@@ -105,5 +105,5 @@
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 
 	<!-- 设置全局异常处理    注解扫描 不需要手动配置
-	<bean id="defaultExceptionHandler" class="com.wanlin.util.DefaultExceptionHandler"></bean> -->
+	<bean id="defaultExceptionHandler" class="com.Wanlin.util.DefaultExceptionHandler"></bean> -->
 </beans>
