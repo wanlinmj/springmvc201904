@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wanlin.util.DynamicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +108,10 @@ public class CityRestController {
     @RequestMapping(value = "/api/citymap", method = RequestMethod.GET)
     public Map<String,Object> findOneCityMap(@RequestParam Map<String,Object> param) {
     	Map<String,Object> res = null;
+        DynamicDataSource.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSource.setCustomerType(DynamicDataSource.DATASOURCE_SALVE);//切换数据源，设置后 就OK了。可以随时切换过来（在controller层切换）
         res = cityService.findCityMapByParam(param);
+        DynamicDataSource.clearCustomerType();
         return res;
     }
     
