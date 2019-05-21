@@ -102,7 +102,52 @@ spring web 搭建记录
     </error-page>
     
     
+================================================================================================================
+
+   多数据配置
+   
+   1、配置多份数据库连接参数   applicationContext.properties
+   
+   2、applicationContext-spring.xml 配置多数据源
+   <!-- 配置数据源   jdbc数据库连接池 -->
+	<bean id="dataSource1" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="${jdbc.driver}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.username}"/>
+	    <property name="password" value="${jdbc.password}"/>
+	</bean>
+
+	<!-- 配置数据源   jdbc数据库连接池 -->
+	<bean id="dataSource2" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc2.driver}"/>
+		<property name="url" value="${jdbc2.url}"/>
+		<property name="username" value="${jdbc2.username}"/>
+		<property name="password" value="${jdbc2.password}"/>
+	</bean>
+
+	<!-- 数据源路由 -->
+	<bean id="dataSource" class="com.wanlin.util.DynamicDataSource">
+		<property name="defaultTargetDataSource" ref="dataSource1"/>
+		<property name="targetDataSources">
+			<map>
+				<entry value-ref="dataSource1" key="dataSource1"/>
+				<entry value-ref="dataSource2" key="dataSource2"/>
+			</map>
+		</property>
+	</bean>
 	
+	3、实现 DynamicDataSource extend  AbstractRoutingDataSource 实现动态切换数据源
+	
+	4、具体调用，切换 数据源
+	DynamicDataSource.clearCustomerType();//重点： 实际操作证明，切换的时候最好清空一下
+        DynamicDataSource.setCustomerType(DynamicDataSource.DATASOURCE_SALVE);
+	//切换数据源，设置后 就OK了。可以随时切换过来（在controller层切换）
+        res = cityService.findCityMapByParam(param);
+        DynamicDataSource.clearCustomerType();
+   
+   
+   
+	  
 	
 	
 	
